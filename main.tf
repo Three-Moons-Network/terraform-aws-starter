@@ -36,11 +36,11 @@ provider "aws" {
 module "vpc" {
   source = "./modules/vpc"
 
-  vpc_cidr                = var.vpc_cidr
-  environment             = var.environment
-  project                 = var.project
-  enable_nat_gateway      = var.enable_nat_gateway
-  enable_flow_logs        = var.enable_flow_logs
+  vpc_cidr                 = var.vpc_cidr
+  environment              = var.environment
+  project                  = var.project
+  enable_nat_gateway       = var.enable_nat_gateway
+  enable_flow_logs         = var.enable_flow_logs
   flow_logs_retention_days = var.flow_logs_retention_days
 }
 
@@ -80,10 +80,10 @@ module "alerting" {
 module "cloudtrail" {
   source = "./modules/cloudtrail"
 
-  project                      = var.project
-  environment                  = var.environment
+  project                       = var.project
+  environment                   = var.environment
   cloudwatch_log_retention_days = var.cloudtrail_log_retention_days
-  alarm_sns_topic_arns         = [module.alerting.ops_alerts_topic_arn]
+  alarm_sns_topic_arns          = [module.alerting.ops_alerts_topic_arn]
 }
 
 # ---------------------------------------------------------------------------

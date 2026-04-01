@@ -237,8 +237,8 @@ data "aws_iam_policy_document" "enforce_mfa" {
   }
 
   statement {
-    sid       = "DenyAllExceptListedIfNoMFA"
-    effect    = "Deny"
+    sid    = "DenyAllExceptListedIfNoMFA"
+    effect = "Deny"
     not_actions = [
       "iam:GetAccessKeyLastUsed",
       "iam:GetUser",

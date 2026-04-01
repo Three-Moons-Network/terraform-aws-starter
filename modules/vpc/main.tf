@@ -24,7 +24,7 @@ locals {
   private_cidrs = [for i in range(2) : cidrsubnet(var.vpc_cidr, 2, i + 4)]
 
   common_tags = {
-    Project   = var.project
+    Project     = var.project
     Environment = var.environment
     ManagedBy   = "Terraform"
   }
@@ -181,10 +181,10 @@ resource "aws_nat_gateway" "this" {
 }
 
 resource "aws_route" "private_nat" {
-  count              = var.enable_nat_gateway ? 1 : 0
-  route_table_id     = aws_route_table.private.id
+  count                  = var.enable_nat_gateway ? 1 : 0
+  route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id     = aws_nat_gateway.this[0].id
+  nat_gateway_id         = aws_nat_gateway.this[0].id
 }
 
 # ---------------------------------------------------------------------------
