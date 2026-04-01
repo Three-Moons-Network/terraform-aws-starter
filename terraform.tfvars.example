@@ -1,0 +1,46 @@
+# AWS Region
+region = "us-east-1"
+
+# Project and Environment
+project     = "mycompany"
+environment = "prod"
+
+# VPC
+vpc_cidr            = "10.0.0.0/16"
+enable_nat_gateway  = false
+enable_flow_logs    = false
+flow_logs_retention_days = 7
+
+# Alerting — REQUIRED
+alert_email_addresses = [
+  "ops@example.com",
+  "cto@example.com"
+]
+
+# Optional SMS alerts (E.164 format)
+enable_sms_alerts = false
+alert_phone_numbers = []
+
+# Optional critical SMS alerts
+critical_alert_phone_numbers = []
+
+# Optional Slack integration
+enable_slack_integration = false
+
+# Optional PagerDuty integration
+enable_pagerduty_integration = false
+pagerduty_webhook_url        = ""
+
+# CloudTrail
+cloudtrail_log_retention_days = 30
+
+# Budget — REQUIRED
+monthly_budget_limit     = "100"
+enable_safety_net_budget = true
+safety_net_limit         = "500"
+
+# Optional service budgets
+enable_service_budgets = false
+lambda_budget_limit    = "50"
+dynamodb_budget_limit  = "50"
+s3_budget_limit        = "50"

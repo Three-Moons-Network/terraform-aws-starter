@@ -1,0 +1,29 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+crash.log
+*.tfplan
+tfplan.json
+
+# Terraform variables
+terraform.tfvars
+!terraform.tfvars.example
+
+# Secrets
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+**/.DS_Store
