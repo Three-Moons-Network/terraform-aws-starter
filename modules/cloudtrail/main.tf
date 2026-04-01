@@ -66,8 +66,9 @@ data "aws_iam_policy_document" "cloudtrail_bucket" {
   statement {
     sid    = "AWSCloudTrailAclCheck"
     effect = "Allow"
-    principals = {
-      Service = "cloudtrail.amazonaws.com"
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions   = ["s3:GetBucketAcl"]
     resources = [aws_s3_bucket.cloudtrail.arn]
@@ -76,8 +77,9 @@ data "aws_iam_policy_document" "cloudtrail_bucket" {
   statement {
     sid    = "AWSCloudTrailWrite"
     effect = "Allow"
-    principals = {
-      Service = "cloudtrail.amazonaws.com"
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions = [
       "s3:PutObject",
@@ -98,6 +100,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail" {
   rule {
     id     = "archive-cloudtrail-logs"
     status = "Enabled"
+
+    filter {}
 
     transition {
       days          = 90
@@ -221,7 +225,7 @@ resource "aws_cloudwatch_log_group" "root_account_usage" {
 resource "aws_cloudwatch_log_metric_filter" "root_account_usage" {
   name           = "${var.project}-root-account-usage"
   log_group_name = aws_cloudwatch_log_group.cloudtrail.name
-  filter_pattern = "{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }"
+  pattern        = "{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }"
 
   metric_transformation {
     name      = "${var.project}-RootAccountUsage"
@@ -248,7 +252,7 @@ resource "aws_cloudwatch_metric_alarm" "root_account_usage" {
 resource "aws_cloudwatch_log_metric_filter" "unauthorized_api_calls" {
   name           = "${var.project}-unauthorized-api-calls"
   log_group_name = aws_cloudwatch_log_group.cloudtrail.name
-  filter_pattern = "{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }"
+  pattern        = "{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }"
 
   metric_transformation {
     name      = "${var.project}-UnauthorizedAPICallsMetric"
@@ -275,7 +279,7 @@ resource "aws_cloudwatch_metric_alarm" "unauthorized_api_calls" {
 resource "aws_cloudwatch_log_metric_filter" "iam_policy_changes" {
   name           = "${var.project}-iam-policy-changes"
   log_group_name = aws_cloudwatch_log_group.cloudtrail.name
-  filter_pattern = "{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}"
+  pattern        = "{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}"
 
   metric_transformation {
     name      = "${var.project}-IAMPolicyChangesMetric"

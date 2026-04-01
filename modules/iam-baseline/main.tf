@@ -17,7 +17,7 @@ locals {
 # Account Password Policy
 # ---------------------------------------------------------------------------
 
-resource "aws_account_password_policy" "this" {
+resource "aws_iam_account_password_policy" "this" {
   minimum_password_length        = 14
   require_lowercase_characters   = true
   require_numbers                = true
