@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: terraform-aws-starter
+  description: >
+    Day-one AWS account foundation — VPC, IAM baseline, CloudTrail, budgets, and alerting. Opinionated Terraform modules with production defaults.
+  annotations:
+    github.com/project-slug: Three-Moons-Network/terraform-aws-starter
+  tags:
+    - aws
+    - terraform
+    - iam
+    - vpc
+    - cloudtrail
+spec:
+  type: library
+  lifecycle: experimental
+  owner: user:linuxlsr
